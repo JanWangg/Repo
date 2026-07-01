@@ -1,0 +1,49 @@
+# 敏感資訊（不進 git）
+.env
+*.env
+*.pem
+*.key
+secrets/
+_workspace/.secrets/
+
+# 系統
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Node
+node_modules/
+dist/
+
+# 編輯器
+.idea/
+.vscode/
+
+# 大型二進位檔
+*.zip
+*.tar.gz
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# 備份（已在 /workspace/backup/）
+backup/
+
+# 臨時檔
+*.log
+*.tmp
+
+# Get Notes 原始素材（GitHub push protection 會擋）
+07_Jan-知識庫/_raw_getnotes/
+**/_raw_getnotes/

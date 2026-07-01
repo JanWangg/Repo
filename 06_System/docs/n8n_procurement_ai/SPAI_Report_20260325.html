@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>資材總處採購智能化系統 — 系統分析與開發報告</title>
+<style>
+  :root {
+    --primary: #1a3a5c;
+    --accent: #2563eb;
+    --green: #16a34a;
+    --red: #dc2626;
+    --yellow: #ca8a04;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'PingFang TC', 'Microsoft JhengHei', 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; font-size: 15px; }
+  .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+  header { background: linear-gradient(135deg, #1a3a5c, #2563eb); color: white; padding: 3rem 2rem; border-radius: 16px; margin-bottom: 2rem; }
+  header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+  header .subtitle { opacity: 0.9; font-size: 1.1rem; }
+  header .meta { margin-top: 1rem; font-size: 0.9rem; opacity: 0.8; }
+  .badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 2px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 8px; }
+  h2 { font-size: 1.4rem; color: var(--primary); border-left: 4px solid var(--accent); padding-left: 12px; margin: 2rem 0 1rem; }
+  h3 { font-size: 1.1rem; color: var(--primary); margin: 1.5rem 0 0.6rem; }
+  pre { background: #1e293b; color: #e2e8f0; padding: 1.2rem; border-radius: 10px; overflow-x: auto; font-size: 0.82rem; line-height: 1.7; margin: 1rem 0; font-family: 'Fira Code', 'Consolas', monospace; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin: 1rem 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 1rem 0; }
+  th { background: var(--primary); color: white; padding: 8px 12px; text-align: left; }
+  td { padding: 7px 12px; border-bottom: 1px solid var(--border); }
+  tr:nth-child(even) td { background: #f1f5f9; }
+  .tag { display: inline-block; padding: 1px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+  .tag-green { background: #dcfce7; color: #166534; }
+  .tag-red { background: #fee2e2; color: #991b1b; }
+  .tag-yellow { background: #fef9c3; color: #854d0e; }
+  .tag-blue { background: #dbeafe; color: #1e40af; }
+  .highlight-box { border: 2px solid var(--accent); border-radius: 10px; padding: 1rem 1.2rem; background: #eff6ff; margin: 1rem 0; }
+  .metric { text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #1a3a5c, #2563eb); color: white; border-radius: 12px; }
+  .metric .num { font-size: 2.5rem; font-weight: 700; }
+  .metric .label { opacity: 0.9; margin-top: 4px; }
+  .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+  .section-divider { border: none; border-top: 2px dashed var(--border); margin: 2rem 0; }
+  .checklist-item { padding: 6px 0; border-bottom: 1px solid #f1f5f9; }
+  .footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.85rem; margin-top: 2rem; border-top: 1px solid var(--border); }
+  @media (max-width: 600px) {
+    .metrics-grid { grid-template-columns: 1fr 1fr; }
+    pre { font-size: 0.75rem; }
+    h2 { font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>📋 資材總處採購智能化系統</h1>
+  <div class="subtitle">系統分析與開發報告 v1.0</div>
+  <div class="meta">
+    <span class="badge">正式提案報告</span>
+    <span class="badge">2026-03-25</span>
+    <span class="badge">T100 × n8n × Domino × AI Agent</span>
+  </div>
+</header>
+
+<h2>第一章：系統現況與問題界定</h2>
+
+<div class="card">
+<h3>組織概況</h3>
+<table>
+  <tr><td style="width:120px;font-weight:600">編制人數</td><td>203 人</td></tr>
+  <tr><td><strong>據點</strong></td><td>台灣（科中）、中國（松江、昆山）、泰國（RY、CBR）</td></tr>
+  <tr><td><strong>主要系統</strong></td><td>鼎捷 T100 ERP</td></tr>
+  <tr><td><strong>通訊系統</strong></td><td>Lotus Notes（Domino）</td></tr>
+</table>
+</div>
+
+<h3>AOP 指標現況（2025 實測數值）</h3>
+<div class="card">
+<table>
+  <tr><th>指標</th><th>2025 實際</th><th>目標</th><th>狀態</th></tr>
+  <tr><td>PO OTD NBD</td><td>92%</td><td>95%</td><td><span class="tag tag-yellow">需優化</span></td></tr>
+  <tr style="background:#fee2e2"><td><strong>委外 OTD NBD</strong></td><td><strong style="color:#dc2626">56%</strong></td><td>90%</td><td><span class="tag tag-red">🔴 落後34pp</span></td></tr>
+  <tr><td>PR→PO ≤2天達成率</td><td>98.9%</td><td>95%</td><td><span class="tag tag-green">✅ 已超標</span></td></tr>
+  <tr><td>入庫及時率</td><td>99.5%</td><td>99%</td><td><span class="tag tag-green">✅ 已超標</span></td></tr>
+  <tr><td>Cost Reduction</td><td>0.75%</td><td>0.5%</td><td><span class="tag tag-green">✅ 已超標</span></td></tr>
+  <tr><td>RFQ OTD</td><td>93.9%</td><td>93%</td><td><span class="tag tag-yellow">接近目標</span></td></tr>
+</table>
+</div>
+
+<div class="highlight-box">
+  <strong>🔴 關鍵發現</strong>：委外 OTD 56% 是最大痛點，落後幅度 34pp。<br>
+  <strong>📊 年採購規模</strong>：2025 年 NT$7,872,924,858（年處理 RFQ 130,107 件 / PO 211,932 件 / 委外 139,868 件）
+</div>
+
+<h2>第二章：解決方案總覽</h2>
+
+<div class="card">
+<div style="background:linear-gradient(135deg,#1a3a5c,#2563eb);color:white;padding:1rem 1.5rem;border-radius:10px;margin-bottom:1rem">
+  <strong style="font-size:1.2rem">Smart Procurement AI（SPAI）</strong><br>
+  n8n 工作流引擎 + T100 ERP + Domino Mail + AI Agent
+</div>
+<table>
+  <tr><th style="width:200px">覆蓋範圍</th><th>對應 Agent</th></tr>
+  <tr><td>RFQ 詢價與供應商比價</td><td>Agent 1</td></tr>
+  <tr><td>核價流程輔助決策</td><td>Agent 1 / 4</td></tr>
+  <tr><td>PO 建立、Release、追蹤</td><td>Agent 2</td></tr>
+  <tr><td>委外工單追蹤與交期管理</td><td>Agent 4</td></tr>
+  <tr><td>IQC/FQC 品質檢驗通知</td><td>Agent 2 / 4</td></tr>
+  <tr><td>完工入庫預測</td><td>Agent 2 / 4</td></tr>
+  <tr><td>發票自動化解析與比對</td><td>Agent 5</td></tr>
+  <tr><td>應付帳款異常偵測</td><td>Agent 5</td></tr>
+</table>
+</div>
+
+<h2>第三章：AI 系統架構設計</h2>
+
+<div class="card">
+<h3>技術架構圖</h3>
+<pre>┌──────────────────────────────────────────────────┐
+│              企業內網（Intranet）                    │
+│                                                    │
+│  ┌──────────────┐        ┌──────────────────┐    │
+│  │  鼎捷 T100  │        │  IBM Domino      │    │
+│  │  ERP 系統   │        │  (Lotus Notes)  │    │
+│  │ HTTP REST   │        │  IMAP / SMTP    │    │
+│  └──────┬──────┘        └────────┬─────────┘    │
+└─────────┼──────────────────────────┼───────────────┘
+          │ HTTP REST/SOAP          │ IMAP/SMTP
+          ▼                          ▼
+    ┌─────────────────────────────────────────┐
+    │              n8n 主機                     │
+    │                                          │
+    │  Agent 0：協調者（Router）              │
+    │  Agent 1：RFQ 策略智能體               │
+    │  Agent 2：PO 追蹤智能體                │
+    │  Agent 3：供應商通訊智能體             │
+    │  Agent 4：委外管理智能體               │
+    │  Agent 5：AP 發票自動化智能體          │
+    │                                          │
+    │  PostgreSQL：狀態追蹤 / 歷史日誌        │
+    └─────────────────────────────────────────┘
+                      │ Webhook
+                      ▼
+              ┌─────────────────┐
+              │  Slack / Teams  │
+              │  通知與審批     │
+              └─────────────────┘</pre>
+</div>
+
+<h3>Agent 團隊總表</h3>
+<div class="card">
+<table>
+  <tr><th>ID</th><th>名稱</th><th>核心職責</th><th>覆蓋 T100 模組</th></tr>
+  <tr><td>0</td><td>協調者</td><td>流程路由 + Gate</td><td>全系統協調</td></tr>
+  <tr><td>1</td><td>RFQ策略</td><td>供應商比價</td><td>aimm214/axmt421/aooi084</td></tr>
+  <tr><td>2</td><td>PO追蹤</td><td>交期追蹤 + 異動</td><td>apmt500/aqct300</td></tr>
+  <tr><td>3</td><td>通訊師</td><td>Email 生成/解析</td><td>Domino IMAP/SMTP</td></tr>
+  <tr><td>4</td><td>委外管理</td><td>委外全鏈路</td><td>asft300/axmt421/aqct300</td></tr>
+  <tr><td>5</td><td>AP發票</td><td>發票解析 + 比對</td><td>aapt110/aapt310</td></tr>
+</table>
+</div>
+
+<h2>第四章：整合方案與 API 端點</h2>
+
+<div class="card">
+<table>
+  <tr><th>模組</th><th>T100 API</th><th>AI 應用</th></tr>
+  <tr><td>aimm214 據點採購資料</td><td>GET /api/aimm214/query</td><td>AVL 自動分流</td></tr>
+  <tr><td>axmt421 核價</td><td>GET /api/axmt421/query</td><td>歷史比價 + 建議區間</td></tr>
+  <tr><td>axmt410/aooi084 RFQ</td><td>GET/POST /api/aooi084/*</td><td>供應商報價寫入</td></tr>
+  <tr><td>apmt500 採購單</td><td>GET/POST /api/apmt500/*</td><td>PO 建立 + Release</td></tr>
+  <tr><td>aqct300 IQC/FQC</td><td>GET /api/aqct300/query</td><td>QC 結果即時通知</td></tr>
+  <tr><td>asft300/340 入庫</td><td>GET/POST /api/asft340/*</td><td>完工入庫預測</td></tr>
+  <tr><td>aapt110 應付帳款</td><td>GET/POST /api/aapt110/*</td><td>發票解析 + 比對 + 異常偵測</td></tr>
+  <tr><td>aapt310 預付款</td><td>GET /api/aapt310/query</td><td>預付款自動沖銷</td></tr>
+</table>
+</div>
+
+<h2>第五章：七大模組 AI 應用</h2>
+
+<div class="card">
+<table>
+  <tr><th>T100 模組</th><th>AI 應用</th><th>核心價值</th></tr>
+  <tr><td>aimm214</td><td>AVL 自動分流</td><td>省去人工判斷，快速分流</td></tr>
+  <tr><td>axmt421</td><td>核價談判助理</td><td>每次談判前自動帶出建議區間</td></tr>
+  <tr><td>axmt410/aooi084</td><td>RFQ mail 生成</td><td>批量自動發送，減少人工鍵檔</td></tr>
+  <tr><td>apmt500</td><td>PO 建立輔助</td><td>自動帶入預設資訊，減少錯誤</td></tr>
+  <tr><td>apmt500 Release</td><td>交期追蹤</td><td>自動發送確認 mail + 催供</td></tr>
+  <tr><td>aqct300</td><td>QC 結果即時通知</td><td>驗退立刻知道，零延遲</td></tr>
+  <tr><td>asft340</td><td>完工入庫預測</td><td>提前知道是否延誤</td></tr>
+  <tr><td>aapt110</td><td>發票自動解析比對</td><td>🔴 預防重複付款</td></tr>
+  <tr><td>aapt310</td><td>預付款自動沖銷</td><td>零錯誤</td></tr>
+</table>
+</div>
+
+<h2>第六章：人類 Gate 設計（四個審核點）</h2>
+
+<div class="card">
+<table>
+  <tr><th>Gate</th><th>觸發時機</th><th>等待動作</th></tr>
+  <tr><td><span class="tag tag-blue">Gate 1</span></td><td>AI 完成供應商搜尋</td><td>人確認非 AVL 候選名單</td></tr>
+  <tr><td><span class="tag tag-blue">Gate 2</span></td><td>AI 生成完整比價報告</td><td>人核准比價報告</td></tr>
+  <tr><td><span class="tag tag-yellow">Gate 3</span></td><td>AI 發現交期延誤 > 2 天</td><td>人選擇行動</td></tr>
+  <tr><td><span class="tag tag-red">Gate 4</span></td><td>AI 發現 🔴 紅燈發票</td><td>AP 主管親自處理</td></tr>
+</table>
+</div>
+
+<h2>第七章：完整 ROI 分析（基於 AOP 實際數值）</h2>
+
+<div class="metrics-grid">
+  <div class="metric">
+    <div class="num">11,948%</div>
+    <div class="label">方案 A Year 1 ROI</div>
+  </div>
+  <div class="metric">
+    <div class="num">$159.5M</div>
+    <div class="label">年度總效益（基準）</div>
+  </div>
+  <div class="metric">
+    <div class="num">3 天</div>
+    <div class="label">方案 A 回收期</div>
+  </div>
+  <div class="metric">
+    <div class="num">$97.9M</div>
+    <div class="label">委外 OTD 改善效益</div>
+  </div>
+</div>
+
+<div class="card">
+<h3>年度效益明細</h3>
+<table>
+  <tr><th>效益項目</th><th>年度效益</th><th>說明</th></tr>
+  <tr style="background:#fee2e2"><td><strong>委外 OTD 改善（56%→70%，改善 14pp）</strong></td><td><strong style="color:#dc2626">$97.9M</strong></td><td>19,581件 × $5,000/件<br><span class="tag tag-red">最大單一效益槓桿</span></td></tr>
+  <tr><td>Cost Reduction 提升（0.75%→1.0%，+0.25pp）</td><td>$19.7M</td><td>$7.87B × 0.25%</td></tr>
+  <tr><td>PO OTD 改善（92%→95%，改善 3pp）</td><td>$19.1M</td><td>6,358 件 × $3,000/件</td></tr>
+  <tr><td>PR→PO 效率提升（每件省 10 分鐘，212,644 件）</td><td>$12.4M</td><td>節省人工時間</td></tr>
+  <tr><td>RFQ OTD 改善（93.9%→97%，+3.1pp）</td><td>$8.1M</td><td>4,033 件 × $2,000/件</td></tr>
+  <tr><td>發票自動化（Key-in + 預防重複 + 異常提前發現）</td><td>$4.8M</td><td><span class="tag tag-green">獨立 Pilot，2 個月回收</span></td></tr>
+  <tr style="background:#dcfce7"><td><strong>總年度效益（基準）</strong></td><td><strong style="color:#166534">$159.5M</strong></td><td></td></tr>
+  <tr><td>總年度效益（保守 50%）</td><td>$79.8M</td><td></td></tr>
+  <tr><td>總年度效益（樂觀）</td><td>$239.3M</td><td></td></tr>
+</table>
+</div>
+
+<div class="highlight-box">
+  <strong>⚠️ 敏感度分析</strong>：即使委外 OTD 完全無改善（0pp），其餘效益 ROI 仍有 4,554%。<br>
+  → <strong>唯一真正的風險是「來不及建置」，而非「ROI 不足」</strong>
+</div>
+
+<h2>第八章：開發時程與里程碑</h2>
+
+<div class="card">
+<table>
+  <tr><th>階段</th><th>時程</th><th>範圍</th><th>成功指標</th></tr>
+  <tr>
+    <td><span class="tag tag-green">Phase 1</span><br>Pilot</td>
+    <td>4-6 週</td>
+    <td>RFQ 比價 + PO 追蹤 + Email 解析<br>（1 個據點，1 個採購員）</td>
+    <td>比價報告生成<br>PO 追蹤覆蓋率 > 80%</td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-yellow">Phase 2</span><br>委外系統</td>
+    <td>6-8 週</td>
+    <td>Agent 4 + 委外 OTD 追蹤<br>（四個據點全覆蓋）</td>
+    <td>委外 OTD 從 56% 提升至 65%</td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-blue">Phase 3</span><br>AI 深化</td>
+    <td>8-12 週</td>
+    <td>Agent 5（發票自動化）<br>+ 預測模組</td>
+    <td>發票自動通過率 > 85%</td>
+  </tr>
+</table>
+</div>
+
+<h2>建議行動與待確認事項</h2>
+
+<div class="card">
+<table>
+  <tr><th>時間</th><th>行動項目</th></tr>
+  <tr><td><span class="tag tag-green">立即</span></td><td>□ 確認 T100 API 是否可達（curl / Postman 測試）<br>□ 聯繫 IT 確認 Domino IMAP 是否開通<br>□ 確認 n8n 部署環境（VM / Docker / Cloud）</td></tr>
+  <tr><td><span class="tag tag-yellow">30 天內</span></td><td>□ IT 完成先行環境驗證清單（12 項）<br>□ 取得 T100 API Token<br>□ Pilot 確認範圍：選擇 1 個據點 + 1 個採購員</td></tr>
+  <tr><td><span class="tag tag-blue">60 天內</span></td><td>□ Pilot 上線<br>□ 收集第一筆實際使用數據<br>□ 確認 Phase 2 委外系統優先順序</td></tr>
+</table>
+</div>
+
+<div class="card" style="background:#fff7ed;border-color:#fed7aa">
+<h3>⚠️ 需要 Jan 確認的關鍵問題</h3>
+<ol style="padding-left:1.5rem">
+  <li class="checklist-item">委外延誤件的真實成本是多少？（目前假設 $5,000/件）</li>
+  <li class="checklist-item">IT 建置人時是 internal cost 還是外包行情？</li>
+  <li class="checklist-item">n8n 部署在哪裡？（公司內部 VM 還是雲端？）</li>
+  <li class="checklist-item">$7.87B 採購額是含稅口徑？</li>
+  <li class="checklist-item">Pilot 的第一個據點，建議選哪一個？（松江/昆山/泰國）</li>
+  <li class="checklist-item">第一個參加 Pilot 的採購員，是否有人自願？</li>
+  <li class="checklist-item">T100 API 文件是否完整？（影響 Phase 2 整合難度）</li>
+  <li class="checklist-item">Domino 是否已啟用 IMAP？（若未啟用，需要管理員開通）</li>
+  <li class="checklist-item">公司的 LLM API 預算用哪一個？（Claude / GPT-4o / MiniMax）</li>
+</ol>
+</div>
+
+<h2>附錄：文件清單</h2>
+<div class="card">
+<table>
+  <tr><th>文件名</th><th>內容</th></tr>
+  <tr><td>00_INDEX.md</td><td>文件索引</td></tr>
+  <tr><td>01_n8n_Workflow_Design.md</td><td>n8n Workflow + Agent 0-5 設計</td></tr>
+  <tr><td>02_Agent_Prompt_Library.md</td><td>14 個中文 Prompt 定義</td></tr>
+  <tr><td>03_System_Integration_Spec.md</td><td>T100 × n8n × Domino 整合規格</td></tr>
+  <tr><td>04_ROI_Analysis.md</td><td>ROI 分析（已用 AOP 實際數值）</td></tr>
+  <tr><td>05_Outsourcing_Workflow.md</td><td>委外 Workflow（Agent 4）</td></tr>
+  <tr><td>06_Procurement_Cycle_Complete_Map.md</td><td>採購全景圖 v2.0（T100 七大模組）</td></tr>
+  <tr><td>07_Invoice_Automation.md</td><td>發票自動化 Workflow（Agent 5）</td></tr>
+  <tr><td><strong>08_系統分析開發報告.md</strong></td><td><strong>⭐ 完整系統分析開發報告（本文）</strong></td></tr>
+</table>
+<p style="margin-top:1rem;font-size:0.85rem;color:#64748b">文件位置：/workspace/docs/n8n_procurement_ai/</p>
+</div>
+
+<div class="footer">
+  版本：v1.0 | 維護者：採購智能化專案團隊<br>
+  最後更新：2026-03-25
+</div>
+
+</div>
+</body>
+</html>
