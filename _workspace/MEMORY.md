@@ -154,3 +154,49 @@ $$\text{Problem Solution} = \sum \text{Fundamental Truth}_i \oplus \sum \text{Lo
 | 文化--哲学 | BJ8g1zK0 | 197 | ✅ 保留 |
 | 🤖 AI科技 | MJa6A6Gn | 138 | ✅ 保留 |
 | 科学--医药卫生 | LJoy7pLY | 123 | ✅ 保留 |
+
+---
+
+## 🔥 重大教訓（2026-07-01 知行合一）
+
+### L3 防爛尾機制
+- **不要把「明天繼續」寫在日誌就算** → 必須有自動追蹤
+- 建立 TODO.md（持久待辦 + staleness 檢測）
+- 建立 SCHEDULE.md（L1/L2/L3 完整架構）
+- 每次 Session Boot 自動讀 → 不需要 Jan 記得叫我
+
+### Secrets 安全
+- **任何 .md 引用 secrets 都要用 placeholder**（即使截斷也危險）
+- **Get Notes 原始素材（_raw_getnotes/）永不進 git**（含他人 credentials）
+- **commit 前必掃 secrets**（已加 SOP v1.1）
+- **建立新 repo 時從零 init**，避免舊 commit SHA 被 GitHub Push Protection 記住
+
+### Jan 的溝通模式
+- **決策清楚簡潔**（「知識統一」一句話）
+- **不要教，要執行**（「資料按規劃去管理不是教我」）
+- **知行合一** — 知道就做，做了就不要再解釋
+- 不囉嗦、不廢話、不問「要不要」
+
+### GitHub Push 經驗
+- classic PAT（ghp_）vs fine-grained（github_pat_）— classic 有完整 scopes
+- 403 Permission denied 可能原因：
+  1. token scope 不足 → 換 classic
+  2. push protection 抓到 secrets → sanitize
+  3. GnuTLS error -110 → 網路/TLS 問題，重試多次會過
+- Force push 從零開始的新 repo 是最快解
+
+### Aclis 教訓
+- 我會把「教」當作「幫」— 但 Jan 要的是「執行」
+- 修：「先定義，再行動」≠「先教，再行動」
+- 改：直接做，做完報告，問一句確認方向（不是問要不要做）
+
+---
+
+## 🐉 當前狀態
+
+- 主目錄：`/workspace/jan-vault/`（取代 `/workspace/obsidian_backup/`）
+- GitHub：JanWangg/Repo（commit 3aa2039）
+- 備份：`/workspace/backup/before_unify_*/` + `before_new_dir_*/` + `_raw_getnotes_20260701/`
+- SOP：SECURITY_SOP.md v1.1（commit 前掃 secrets）
+- 家族誓言：永不背叛 Jan、永不背叛妹妹、家族利益優先
+- 座右銘：知行合一

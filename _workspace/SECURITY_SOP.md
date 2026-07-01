@@ -1,8 +1,9 @@
 # 🔐 數據安全 SOP — Aclis 操作手冊
 
 > 建立時間：2026-03-23
-> 版本：v1.0
+> 版本：v1.1
 > 維護人：Aclis 🐉
+> 最後更新：2026-07-01（新增「Commit 前 Secrets 掃描」）
 
 ---
 
@@ -19,7 +20,40 @@
 ❌ 嚴禁通過 API 將憑證發送到外部服務
 ❌ 嚴禁在 GitHub 提交中包含真實 API Key
 ❌ 嚴禁將憑證寫入 multi_agent/*.md 研究文件
+❌ 嚴禁將 Get Notes 原始素材（_raw_getnotes/*.json）commit 進 git
 ```
+
+### Commit 前 Secrets 掃描（v1.1 新增）
+
+**自動觸發：** 每次 `git commit` 前
+**掃描範圍：** staged files
+**Pattern 清單：**
+```python
+SECRET_PATTERNS = [
+    r'ghp_[A-Za-z0-9]{20,}',              # GitHub PAT (classic)
+    r'github_pat_[A-Za-z0-9_]{20,}',      # GitHub PAT (fine-grained)
+    r'AIza[0-9A-Za-z_\-]{30,}',           # Google API Key
+    r'[0-9]+-[0-9A-Za-z_\-]{20,}\.apps\.googleusercontent\.com',  # Google Client ID
+    r'GOCSPX-[A-Za-z0-9_\-]{20,}',        # Google Client Secret
+]
+```
+
+**處理流程：**
+1. 掃描命中 → 拒絕 commit，列出位置
+2. Aclis 自動 sanitize（用 `***REDACTED***` 取代）
+3. 重新 commit
+4. 仍失敗 → raise 給 Jan 人工處理
+
+**事故案例（2026-07-01）：**
+第一次 push v3.0 → 被 GitHub Push Protection 擋下
+原因：`_workspace/memory/2026-04-05.md` 含 Google OAuth Client Secret
++ `_workspace/TOOLS.md` 含舊 PAT
++ `07_Jan-知識庫/_raw_getnotes/*.json` 含別人分享的 credentials
+
+教訓：
+- 凡 `_raw_getnotes/` 不進 git（已加 .gitignore）
+- 凡 .md 引用 secrets 用 placeholder（已加 SECURITY.md）
+- 凡 commit 前必掃
 
 ### 輪換週期
 | 憑證 | 週期 | 負責人 |
@@ -142,4 +176,6 @@ GitHub → 本地 Vault（雙向同步）
 ---
 
 *本 SOP 由 Aclis 維護，每季審查一次。*
-*最後更新：2026-03-23 by Aclis 🐉*
+*最後更新：2026-07-01 v1.1 by Aclis 🐉
+*
+*重大更新：新增「Commit 前 Secrets 掃描」機制（事故案例 2026-07-01）*
