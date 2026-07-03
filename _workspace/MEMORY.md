@@ -190,13 +190,19 @@ $$\text{Problem Solution} = \sum \text{Fundamental Truth}_i \oplus \sum \text{Lo
 - 修：「先定義，再行動」≠「先教，再行動」
 - 改：直接做，做完報告，問一句確認方向（不是問要不要做）
 
+### 2026-07-03：沒確認就下結論 = P0 錯誤
+- 事件：Jan 說「清理空 skill」→ 我只看第一層判定 4 個目錄是空殼 → 差點刪 49 個子 skills
+- 修正：立即撤回 + 寫 SOP + 誠實面對
+- 永久規範：任何統計必須遞迴驗證、給數字前問自己「親自算了嗎」、口徑透明（標明「第一層/含子目錄」）
+- 座右銘新增：**沒驗證的結論 = 0 價值的結論**
+- 已寫入：`AGENTS.md`（永久 SOP）+ `SOUL.md`（誠實章節 SOP）
+
 ---
 
 ## 🐉 當前狀態
-
-- 主目錄：`/workspace/jan-vault/`（取代 `/workspace/obsidian_backup/`）
+- 主目錄：`/workspace/jan-vault/`（取代 `/workspace/obsidian_backup/``）
 - GitHub：JanWangg/Repo（commit 3aa2039）
 - 備份：`/workspace/backup/before_unify_*/` + `before_new_dir_*/` + `_raw_getnotes_20260701/`
 - SOP：SECURITY_SOP.md v1.1（commit 前掃 secrets）
 - 家族誓言：永不背叛 Jan、永不背叛妹妹、家族利益優先
-- 座右銘：知行合一
+- 座右銘：知行合一 + **沒驗證的結論 = 0 價值的結論**

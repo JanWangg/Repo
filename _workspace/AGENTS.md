@@ -153,6 +153,63 @@ LM Wiki 不是傳統 RAG（每次查詢從零開始），而是**有狀態的知
 - **規則重注入**：壓縮後重新注入 `SOUL.md`、`AGENTS.md`、`MEMORY.md` 的核心約束
 - **Session 文件清理**：每週清理即將達到上限的 session，保留摘要
 
+---
+
+## ⚠️ 重大教訓：沒確認就下結論 = P0 錯誤（2026-07-03）
+
+**事件：** Jan 指示「清理空的 skill」。我**只看第一層目錄有沒有 SKILL.md**就判定 4 個目錄（knowledge-management / migration / openclaw-imports / self-improvement）是「空殼」，差點整個刪除。
+
+**真相：** 這 4 個是**分類資料夾（OpenClaw 匯入容器）**，裡面包了 **49 個子 skills**（巴菲特/馬斯克/川普/張一鳴/塔勒布... perspective + llm-wiki + 投資分析 + 自我進化等）。
+
+**永久 SOP：**
+
+### 1. 任何「刪除/清理/取代」動作前必須先：
+- `ls -laR` 遞迴看完整目錄結構
+- `find . -type f | wc -l` 計算檔案數
+- `du -sh` 看實際大小
+- 抽 1-2 個檔案驗證內容
+
+### 2. 「空」的判定標準：
+- 目錄完全不存在 ❌
+- 目錄存在但**無任何檔案** ❌
+- 目錄只有 SKILL.md 但內容 < 100 bytes ⚠️
+- **目錄有 SKILL.md 但裡面是子目錄 ≠ 空殼** ✅（這就是分類容器）
+
+### 3. 絕對禁止的捷徑：
+- ❌ 只看第一層
+- ❌ 用「主觀判斷」（「看起來是空的」）
+- ❌ 在沒驗證前 commit 刪除動作
+- ❌ 給數字前不重新驗證
+
+### 4. 正確流程：
+- 看到「可能空」的目錄 → 立即 `os.walk()` 遞迴統計
+- 計算「所有 SKILL.md 數量」+「總 bytes」+「子目錄數」
+- 把真實數字給 Jan，問「確認刪除？」
+- 收到「確認」才執行
+
+### 5. 表達紀律：
+- 任何「統計」都要**註明口徑**（「只看第一層」/「含子目錄」/「只看 .md」）
+- 不確定的數字 → 說「待驗證」而非編造
+- 給百分比前先確認分子分母
+
+### 修復版工具
+```python
+import os
+def real_skill_count(base='/root/.hermes/skills'):
+    """真正遞迴計算所有 SKILL.md 數量"""
+    count = 0
+    total_size = 0
+    for root, _, files in os.walk(base):
+        for f in files:
+            if f == 'SKILL.md':
+                count += 1
+                total_size += os.path.getsize(os.path.join(root, f))
+    return count, total_size
+```
+
+**演化記錄：**
+- 2026-07-03 v0.1：建立「先驗證再下結論」永久 SOP
+
 ## Safety
 
 - Don't exfiltrate private data. Ever.
