@@ -135,8 +135,44 @@ P2（下心跳）：單次錯誤、輕微異常
 - 無異常 → 不打擾
 - Jan 主動說「靜音」→ 暫停 L2 通知 N 小時
 
-## MiniMax Token 監控
-- [ ] 每次 session 結束時跑 `python3 /root/.hermes/scripts/minimax_token_monitor.py`
-- [ ] 黃線（>1M/day）→ 記錄到 vault，減量
-- [ ] 紅線（>2M/day）→ 主動告知 Jan
-- [ ] 數據存到 `_workspace/monitoring/minimax_tokens_YYYYMMDD_HHMM.json`
+## MiniMax Token 監控 v2.0（80/20 SOP）
+
+### 📐 核心公式
+```
+ax ≤ 4by
+其中：
+  x = 深度 sessions 數（weixin）
+  y = 日常 sessions 數（cron）
+  a = 深度 session 平均 token
+  b = 日常 session 平均 token
+```
+
+等價於：深度占比 ≤ 80% 且 日常占比 ≥ 20%
+
+### 警戒分級
+| 等級 | 條件 | 行動 |
+|------|------|------|
+| 🟢 綠 | 深度 ≤ 70% 且 日常 ≥ 30% | 正常 |
+| 🟡 黃 | 深度 70-80% 或 日常 20-30% | 記錄，提示注意 |
+| 🔴 紅 | 深度 > 80% 或 日常 < 20% | 立刻告知 Jan |
+| ⛔ 黑 | 總量 > 2M tokens | 立刻中斷 + 報告 |
+
+### Cron Job
+- **自動執行：** 每天 22:00（CST）
+- **Job ID:** `5730b07efbc8` (minimax_token_daily_sop_check)
+- **腳本：** `python3 /root/.hermes/scripts/minimax_token_monitor.py`
+- **結果存：** `/workspace/jan-vault/_workspace/monitoring/daily_minimax_YYYYMMDD.json`
+- **超標通知：** 紅線/黑線觸發 → 立刻推送 weixin
+
+### 今日驗證（2026-07-03）
+- 深度 81.4% > 80% 上限 → 🔴 紅線觸發
+- 日常 18.6% < 20% 下限 → 🔴 紅線觸發
+- 總量 1.42M → 🟡 黃線
+- 結論：今日為「深度任務日」，紅線觸發合理
+
+### 手動觸發
+- [ ] 任何時候想查：跑 `python3 /root/.hermes/scripts/minimax_token_monitor.py`
+- [ ] 看 7 日平均：自動算
+
+### 演化記錄
+- 2026-07-03 v2.0：建立 80/20 SOP + 公式 ax ≤ 4by + cron 22:00
