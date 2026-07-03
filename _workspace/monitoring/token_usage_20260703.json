@@ -1,0 +1,56 @@
+{
+  "date": "2026-07-03",
+  "session_start": "06:12",
+  "current_time": "09:33",
+  "quota_limits": {
+    "read": 1000,
+    "write": 500,
+    "write_notes": 50
+  },
+  "yellow_threshold_pct": 60,
+  "red_threshold_pct": 80,
+  "calls": [
+    {
+      "time": "06:12-08:00",
+      "type": "recall",
+      "count": 15,
+      "purpose": "Boot 找昨日 wiki + 晨報抓取"
+    },
+    {
+      "time": "08:00-08:15",
+      "type": "recall",
+      "count": 8,
+      "purpose": "4 篇晨報攝入（投資/讀書/半導體/AI）"
+    },
+    {
+      "time": "08:15-08:30",
+      "type": "recall",
+      "count": 12,
+      "purpose": "NVIDIA 三週期 wiki 抓素材"
+    },
+    {
+      "time": "08:30-09:00",
+      "type": "recall",
+      "count": 6,
+      "purpose": "找 7/3 個人 post 定位"
+    },
+    {
+      "time": "09:00-10:00",
+      "type": "recall",
+      "count": 0,
+      "purpose": "skill 寫作（無 API）"
+    },
+    {
+      "time": "10:00-12:30",
+      "type": "recall",
+      "count": 28,
+      "purpose": "17 post 識別 + 12 學習類搜尋"
+    }
+  ],
+  "estimated_total_read": 69,
+  "yellow_line": 600,
+  "red_line": 800,
+  "read_status": "🟢 安全",
+  "write_status": "🟢 安全",
+  "write_notes_status": "🟢 安全"
+}
