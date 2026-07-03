@@ -1,0 +1,24 @@
+{
+  "date": "2026-07-03",
+  "time": "09:36",
+  "sessions": 9,
+  "input_tokens": 1135936,
+  "output_tokens": 104879,
+  "cache_read_tokens": 13630298,
+  "total_tokens": 1240815,
+  "cost_usd": 0.0,
+  "current_session": {
+    "id": "20260702_191827_da783ec9",
+    "input": 651311,
+    "output": 58739,
+    "total": 710050,
+    "share_of_today": "57%"
+  },
+  "thresholds": {
+    "green": 1000000,
+    "yellow": 2000000,
+    "red": 5000000
+  },
+  "status": "yellow",
+  "warning": "當前對話已占今日 57%，建議控制後續互動量"
+}

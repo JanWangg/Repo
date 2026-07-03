@@ -134,3 +134,9 @@ P2（下心跳）：單次錯誤、輕微異常
 - 23:00 - 08:00 只讀不通知
 - 無異常 → 不打擾
 - Jan 主動說「靜音」→ 暫停 L2 通知 N 小時
+
+## MiniMax Token 監控
+- [ ] 每次 session 結束時跑 `python3 /root/.hermes/scripts/minimax_token_monitor.py`
+- [ ] 黃線（>1M/day）→ 記錄到 vault，減量
+- [ ] 紅線（>2M/day）→ 主動告知 Jan
+- [ ] 數據存到 `_workspace/monitoring/minimax_tokens_YYYYMMDD_HHMM.json`
