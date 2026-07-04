@@ -1,0 +1,175 @@
+# 🛠️ Skill 備份 · semiconductor_report.md (cron prompt)
+
+> **備份日期**：2026-07-04
+> **來源路徑**：`/workspace/crons/prompts/semiconductor_report.md`
+> **KB**：🛠️ 技能模板（`JOaEOM5Y`）
+> **管理員**：Aclis 🐉
+
+---
+
+# 💾 半導體晨報 Prompt（v6 模型化公式版）
+# 用於 Aclis cron 自動產出半導體晨報
+# 最後更新：2026-06-20（含 2026-06-19 圖書館重構路徑）
+
+---
+
+## 任務
+
+每天 09:00 CST 自動生成 💾 半導體晨報，覆蓋 CoWoS / HBM / 設備 / 代工 五大量化模型。所有來源優先 **Tier 1 官方**（SEMI / ASML / TSMC / TrendForce / Digitimes / Reuters / FT）。
+
+---
+
+## 步驟
+
+### 1. Web 搜索（5 組並行，2026-06-19/20 事件優先）
+
+使用 `batch_web_search` 執行 **5 組核心查詢**：
+
+| # | 查詢 | 目標來源 |
+|---|------|---------|
+| 1 | "ASML EUV Q2 2026 orders revenue" | ASML 官方 |
+| 2 | "TSMC CoWoS capacity 2026 monthly wafer" | TSMC / Digitimes |
+| 3 | "HBM3e HBM4 SK Hynix Samsung Micron 2026" | 三星/SK/Micron IR |
+| 4 | "SEMI equipment market 2026 forecast" | SEMI |
+| 5 | "NVIDIA Blackwell Rubin supply chain" | NVIDIA / 供應鏈 |
+
+### 2. Semantic Recall
+
+```
+POST https://openapi.biji.com/open/api/v1/resource/recall
+Headers:
+  Authorization: gk_live_83adb4fe04a4c921.879eac651337fd754020148dabfb84cc0318e2fec390dd94
+  X-Client-ID: cli_3802f9db08b811f197679c63c078bacc
+Body: { "query": "CoWoS HBM ASML 半導體 超級週期", "top_k": 5 }
+```
+
+### 3. 晨報生成（v6 五大量化模型）
+
+Markdown 結構（總長 8-12 KB）：
+
+```markdown
+# 💾 半導體晨報 · {{date}}
+
+> 📅 日期 / 📊 數據基準
+> 📡 資料來源：[列表] | v6.0（模型化公式版）
+
+## 📌 執行摘要（30秒版）
+
+> **本期核心判斷**
+
+| 主題 | 信號 | 評估 |
+|------|------|------|
+| 🔴 | ... | ... |
+
+## 🧮 五大模型
+
+### M1｜摩爾定律量化曲線
+
+$$N_{\text{晶體管}}(t) = N_0 \times 2^{(t - t_0) / 18\text{M}}$$
+
+| 製程 | 量產年 | 密度 | 提升 | 來源 |
+|------|--------|------|------|------|
+| N5 | 2020 | 171 | — | TSMC |
+| N3 | 2022 | 292 | +70% | TSMC |
+| N2 | 2025 | ~520 | +78% | SEMI |
+| A16 | 2027E | ~730 | +40% | TSMC |
+
+### M2｜CoWoS 供需缺口
+
+| 時間 | 設計產能 | 實際 | 需求 | 缺口 |
+|------|---------|------|------|------|
+| 2025 底 | 65K | 60K | 75K | -20% |
+| 2026 中 | 95K | 82K | 100K | -18% |
+| 2026 底 | 130K | 105K | 115K | -9% |
+| 2027 中 | 130K | 130K | 130K | 平衡 |
+
+### M3｜設備時滯
+
+| 指標 | 數據 |
+|------|------|
+| 2026 設備市場 | $138-145B (+9%) |
+| 2027 設備市場 | $156B (歷史峰值) |
+| EUV 交期 | 18-24 月 |
+| High-NA EUV 交期 | 36-48 月 |
+
+### M4｜HBM 超級循環
+
+| 指標 | 數據 |
+|------|------|
+| DDR5 Q1 現貨 | +80-95% |
+| HBM4 三雄 2026 產能 | 全售完 |
+| 缺口延續 | 2027+ |
+
+### M5｜營收彈性
+
+| 公司 | 彈性係數 |
+|------|---------|
+| ASML | ~1.8x |
+| TSMC CoWoS | ~2.0x+ |
+| NVIDIA | ~2.5x |
+
+## 📰 三大頭條
+
+1. **🔴 ...** (一句話 + 數字 + 來源)
+2. **🟡 ...**
+3. **🟢 ...**
+
+## ⚖️ 風險六維
+
+| 維度 | 評估 |
+|------|------|
+| 🌐 宏觀 | ... |
+| 🏭 企業 | ... |
+| 💹 系統 | ... |
+| 📊 估值 | ... |
+| 🌍 地緣 | ... |
+| ⚡ 供需 | ... |
+
+## 💡 投資排序
+
+🥇 **HBM / 記憶體** > 🥈 **先進封裝 CoWoS** > 🥉 **設備（ASML/AMAT/Lam）** > **代工（TSMC）** > **晶片設計（NVIDIA）**
+
+## 🔗 資料來源
+
+| # | 來源 | URL |
+|---|------|-----|
+| 1 | ... | ... |
+```
+
+### 4. 寫入 Get Notes
+
+```
+a. POST https://openapi.biji.com/open/api/v1/resource/note/save
+   Body: { "title": "💾 半導體晨報 · {{date}}", "content": <markdown>, "plain_text": true }
+   → 拿 note_id
+
+b. POST /resource/knowledge/note/batch-add
+   topic_id: pn5rkG6Y（💾 晨報·半導體）
+
+c. tags: ["wisdom", "aclis", "semiconductor", "{{date}}"]  # 注意 ≤ 5 tags
+```
+
+### 5. 🆕 寫入本地 Vault（2026-06-20 圖書館重構）
+
+```bash
+mkdir -p /workspace/obsidian/11_AI_Tech/11-2_Semiconductor
+```
+
+寫入：`/workspace/obsidian/11_AI_Tech/11-2_Semiconductor/Semiconductor_{{date}}.md`
+
+### 6. 🆕 GitHub 推送（2026-06-19 圖書館重構後路徑）
+
+```
+PUT https://api.github.com/repos/FoxUltimate/Obsidian-Vault/contents/11_AI_Tech/11-2_Semiconductor/Semiconductor_{{date}}.md
+Headers:
+  Authorization: token ghp_***REDACTED***
+```
+
+### 7. 完成回報
+
+回報：note_id + GitHub commit SHA + 任何異常。
+
+
+---
+
+_Aclis 🐉 自動備份 · 2026-07-04 07:51 UTC_

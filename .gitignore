@@ -47,3 +47,7 @@ backup/
 # Get Notes 原始素材（GitHub push protection 會擋）
 07_Jan-知識庫/_raw_getnotes/
 **/_raw_getnotes/
+
+# 例外：技能索引頁保留（追蹤我們下載了什麼）
+!_workspace/_skills_from_getnotes/
+!_workspace/_skills_from_getnotes/INDEX.md

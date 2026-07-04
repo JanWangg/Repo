@@ -1,0 +1,46 @@
+{
+  "date": "2026-07-03",
+  "timestamp": "2026-07-03T22:01:24.103186",
+  "totals": {
+    "deep_tokens": 2208635,
+    "daily_tokens": 263796,
+    "total_tokens": 2472431,
+    "seven_day_avg": 2472431
+  },
+  "sessions": {
+    "deep_count": 1,
+    "daily_count": 1,
+    "deep_avg": 2208635.0,
+    "daily_avg": 263796.0
+  },
+  "ratios": {
+    "deep_ratio": 89.3,
+    "daily_ratio": 10.7
+  },
+  "sop_check": {
+    "formula": "ax ≤ 4by",
+    "ax_value": 2208635.0,
+    "four_by_value": 1055184.0,
+    "sop_holds": false,
+    "deep_within_80pct": false,
+    "daily_above_20pct": false
+  },
+  "alert": {
+    "color": "🔴",
+    "status": "RED",
+    "red_line_triggered": true,
+    "yellow_line_triggered": false,
+    "reasons": [
+      "深度 89.3% 超過 80% 上限",
+      "日常 10.7% 低於 20% 下限",
+      "總量 2,472,431 超過 2M 上限"
+    ]
+  },
+  "recommendations": [
+    "深度 session token 過高：weixin 路徑單 session 消耗 2.2M tokens，建議拆分或壓縮上下文",
+    "立即檢查 weixin session 是否有異常累積（可能無限滾動的對話歷史）",
+    "日常 cron 監控被深度任務擠壓，比例嚴重失衡（10.7% vs 目標 20%）",
+    "考慮設置深度 session 單次 token 上限（例如 500K），強制重啟或摘要壓縮",
+    "明日同樣監控此趨勢，若持續惡化需調整任務分流架構"
+  ]
+}
