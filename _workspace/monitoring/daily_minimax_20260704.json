@@ -1,0 +1,59 @@
+{
+  "date": "2026-07-04",
+  "cron_run_at": "2026-07-04T22:00:00+08:00",
+  "script_version": "v2.0",
+  "sop_formula": "ax ≤ 4by (80/20) where x=deep sessions, y=routine sessions, a=avg deep tokens, b=avg routine tokens",
+  "today": {
+    "total_tokens": 4417583,
+    "deep_tokens": 4168440,
+    "routine_tokens": 249143,
+    "deep_pct": 94.4,
+    "routine_pct": 5.6,
+    "sessions_deep": 1,
+    "sessions_routine": 1
+  },
+  "sop_formula_check": {
+    "x_deep_sessions": 1,
+    "y_routine_sessions": 1,
+    "a_avg_deep_tokens": 4168440,
+    "b_avg_routine_tokens": 249143,
+    "lhs_ax": 4168440,
+    "rhs_4by": 996572,
+    "violation_ratio": 4.18,
+    "status": "VIOLATED",
+    "note": "LHS >> RHS (4.18× over limit). 80/20 SOP breached severely."
+  },
+  "trailing_avg": {
+    "days_count": 2,
+    "avg_total_tokens": 3445007,
+    "avg_deep_pct": 91.8,
+    "avg_routine_pct": 8.2
+  },
+  "thresholds": {
+    "green": {"deep_max": 70, "routine_min": 30},
+    "yellow": {"deep_max": 80, "routine_min": 20},
+    "red": {"deep_above": 80, "routine_below": 20, "total_above": 2000000}
+  },
+  "alert": {
+    "level": "RED",
+    "triggered_rules": [
+      "深度 94.4% > 80% 上限 (超出 14.4pp)",
+      "日常 5.6% < 20% 下限 (低於 14.4pp)",
+      "總量 4,417,583 > 2,000,000 (超出 2.2×)",
+      "SOP 公式 ax ≤ 4by 違反 (4.18× 上限)"
+    ],
+    "notify_jan": true,
+    "notification_channel": "wechat"
+  },
+  "recommendations": [
+    "🔴 立即行動：深度 (weixin) 對話單次耗用過高（4.17M tokens），檢查是否為單一深度 session 觸發",
+    "🟡 增加日常 (cron) 任務密度：目前只有 1 個 cron session，結構嚴重失衡",
+    "🟡 深度 session 拆分：將大型深度對話拆分為多輪，每輪控制 token 在合理範圍",
+    "🟢 7 日平均顯示趨勢惡化（91.8% 深度占比），需建立日常任務配額下限"
+  ],
+  "context_notes": [
+    "今日僅 1 個深度 session + 1 個日常 session，樣本量極小",
+    "可能原因：Jan 今晚進行了單次高強度深度對話（如晨報蒸餾、研究分析）",
+    "過去 2 天平均已達 91.8% 深度占比，建議連續監控 7 天觀察趨勢"
+  ]
+}

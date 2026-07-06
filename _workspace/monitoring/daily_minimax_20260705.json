@@ -1,0 +1,57 @@
+{
+  "date": "2026-07-05",
+  "today": {
+    "deep_sessions": 1,
+    "routine_sessions": 1,
+    "deep_tokens": 741047,
+    "routine_tokens": 441279,
+    "total_tokens": 1182326,
+    "deep_ratio": 0.627,
+    "routine_ratio": 0.373,
+    "status": "🟡 黃線",
+    "sop_formula": {
+      "a_avg_deep_tokens": 741047.0,
+      "b_avg_routine_tokens": 441279.0,
+      "x_deep_sessions": 1,
+      "y_routine_sessions": 1,
+      "lhs_ax": 741047.0,
+      "rhs_4by": 1765116.0,
+      "ratio": 0.4198290650586137,
+      "pass": true
+    }
+  },
+  "rolling_7day": {
+    "daily_avg_total": 2721215,
+    "avg_deep_ratio": 0.822,
+    "avg_routine_ratio": 0.178,
+    "status": "🔴 紅線",
+    "alert": true
+  },
+  "thresholds": {
+    "green": {
+      "deep_max": 0.7,
+      "routine_min": 0.3
+    },
+    "yellow": {
+      "deep_range": [
+        0.7,
+        0.8
+      ],
+      "routine_range": [
+        0.2,
+        0.3
+      ],
+      "total_max": 1000000
+    },
+    "red": {
+      "deep_min": 0.8,
+      "routine_max": 0.2,
+      "total_max": 2000000
+    }
+  },
+  "decision": {
+    "should_notify": true,
+    "reason": "7日均值紅線"
+  },
+  "timestamp": "2026-07-05T22:00:58.368519"
+}
