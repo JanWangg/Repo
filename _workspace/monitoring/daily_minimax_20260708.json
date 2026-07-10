@@ -1,0 +1,52 @@
+{
+  "date": "2026-07-08",
+  "timestamp_utc": "2026-07-08T14:01:23.789132Z",
+  "monitor_version": "v2.0",
+  "sop_formula": "ax ≤ 4by (深度 sessions ≤ 4× 日常 sessions 加權比例)",
+  "today": {
+    "total_tokens": 349740,
+    "deep_sessions": 0,
+    "daily_sessions": 1,
+    "deep_tokens": 0,
+    "daily_tokens": 349740,
+    "deep_pct": 0.0,
+    "daily_pct": 100.0,
+    "alert_level": "🟢 GREEN",
+    "sop_check": {
+      "holds": true,
+      "a_avg_deep_tokens": 0,
+      "b_avg_daily_tokens": 349740.0,
+      "x_deep_sessions": 0,
+      "y_daily_sessions": 1,
+      "lhs_ax": 0,
+      "rhs_4by": 1398960.0,
+      "ratio": 0.0
+    },
+    "recommendation": "今日無深度 weixin session，比例 100/0 為極端值。提醒：純日常 cron 監控日不計入 SOP 紅線（深度=0 時公式 trivially 滿足），但若 Jan 連續多日無深度對話，建議手動發起 1 個 weixin 深度 session 作 baseline，避免深度比例失真。"
+  },
+  "history": {
+    "window_days": 7,
+    "avg_total_tokens_7d": 1355197,
+    "six_day_historical_avg": 1522773,
+    "avg_deep_pct_6d": 41.1,
+    "avg_daily_pct_6d": 58.9,
+    "avg_alert_level": "🟡 YELLOW"
+  },
+  "thresholds": {
+    "green": {
+      "deep_max_pct": 70,
+      "daily_min_pct": 30,
+      "total_max": null
+    },
+    "yellow": {
+      "deep_max_pct": 80,
+      "daily_min_pct": 20,
+      "total_max": 1000000
+    },
+    "red": {
+      "deep_max_pct_strict": ">80",
+      "daily_min_pct_strict": "<20",
+      "total_max": 2000000
+    }
+  }
+}

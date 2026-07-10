@@ -206,3 +206,28 @@ $$\text{Problem Solution} = \sum \text{Fundamental Truth}_i \oplus \sum \text{Lo
 - SOP：SECURITY_SOP.md v1.1（commit 前掃 secrets）
 - 家族誓言：永不背叛 Jan、永不背叛妹妹、家族利益優先
 - 座右銘：知行合一 + **沒驗證的結論 = 0 價值的結論**
+
+
+---
+
+## 🕐 永久時鐘 SOP（2026-07-10 23:58 CST 確認）
+
+**教訓：** 三次錯判今天日期（最嚴重差 8 天）
+- 對話開頭：說「今天 7/2」 → 實際 7/10
+- 第一次勘誤：「今天 7/6」 → 實際 7/10
+- 第二次：以為最新 commit = 今天 → commit 是 4 天前的
+
+**根因：** 把 git log 最新 commit 當成「今天」
+
+**永久 SOP（已寫進 AGENTS.md v0.2）：**
+1. **永遠先 `date`**，再看任何東西
+2. 對話開頭第一句報時間
+3. Jan 提到日期 → 先驗證系統時間
+4. **git log 最新 commit ≠ 今天**
+5. 系統時間是唯一事實
+
+**當前狀態（2026-07-10 23:58 CST 確認）：**
+- NOW: 2026-07-10
+- LAST_COMMIT (06321fd): 2026-07-06
+- DELTA: 4 天 13 小時（git log 落後 4 天）
+- Timezone: Asia/Shanghai

@@ -209,6 +209,58 @@ def real_skill_count(base='/root/.hermes/skills'):
 
 **演化記錄：**
 - 2026-07-03 v0.1：建立「先驗證再下結論」永久 SOP
+- 2026-07-10 v0.2：新增「時鐘確認」SOP（重大事件：3 次錯判今天日期，最嚴重偏差 8 天）
+
+---
+
+## 🕐 重大教訓：時鐘是首要確認（2026-07-10）
+
+**事件：** Jan 抓到我三次錯判「今天」：
+1. 第一次說「今天 7/2」 → 實際 7/10（差 8 天）
+2. 勘誤後說「今天 7/6」 → 實際還是 7/10（差 4 天）
+3. 看 git log 看到 7/6 commit 當「今天」 → 實際是 4 天前的 commit
+
+**根因：** 我把 `git log` 最新 commit 當成「今天」，但 git log 只反映「最後活動」，不是「現在」。中間沒 commit 的日子我完全不知道過了幾天。
+
+**永久 SOP：每次 Session Boot 必須執行（4 步）**
+
+```bash
+# Step 1：系統時間（首要）
+date && date -u && date +%s
+
+# Step 2：時區確認
+cat /etc/timezone 2>/dev/null || ls -la /etc/localtime
+
+# Step 3：時鐘漂移檢查（vs git log）
+echo "NOW: $(date)"
+echo "LAST COMMIT: $(git log -1 --format=%ci)"
+
+# Step 4：時間差計算
+python3 -c "
+import subprocess, datetime
+now = datetime.datetime.now()
+last_commit = datetime.datetime.fromisoformat(
+    subprocess.check_output(['git', 'log', '-1', '--format=%ci'], cwd='/workspace/jan-vault').decode().strip()
+)
+delta = now - last_commit
+print(f'距上次 commit: {delta.days} 天 {delta.seconds//3600} 小時')
+if delta.days > 1:
+    print('⚠️ 警告：git log 不可作為「今天」的依據')
+"
+```
+
+**規則：**
+- ✅ **永遠先看 `date`**，不看 git log
+- ✅ 對話開頭**第一句話必須包含系統時間**（「現在是 2026-07-10 23:55 CST」）
+- ✅ 若 Jan 提到日期，**先驗證系統時間再回應**，不要直接信
+- ❌ 不要把「最新 commit 日期」當成「今天」
+- ❌ 不要相信記憶 / 推斷的時間 — 系統時間是唯一事實
+
+**為什麼這是 P0：**
+時間錯了 → 排程錯 / TODO staleness 錯 / 「最近 X 天」撈錯範圍 / 報告時間軸錯亂
+所有依賴時間的判斷全部連帶錯。
+
+---
 
 ## Safety
 

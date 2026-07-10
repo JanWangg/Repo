@@ -1,0 +1,39 @@
+{
+  "date": "2026-07-06",
+  "generated_at": "2026-07-06T22:01:08.823331",
+  "today": {
+    "total_tokens": 342847,
+    "deep_tokens": 0,
+    "routine_tokens": 342847,
+    "deep_pct": 0.0,
+    "routine_pct": 100.0,
+    "sessions_deep": 0,
+    "sessions_routine": 1
+  },
+  "moving_avg": {
+    "window_days": 4,
+    "avg_total": 2126623,
+    "avg_deep_pct": 61.6,
+    "avg_routine_pct": 38.4
+  },
+  "sop_check": {
+    "formula": "ax ≤ 4by (a=深度平均token, x=深度sessions, b=日常平均token, y=日常sessions)",
+    "a": 0,
+    "x": 0,
+    "b": 342847.0,
+    "y": 1,
+    "ax": 0,
+    "four_by": 1371388.0,
+    "pass": true,
+    "deep_pct": 0.0,
+    "routine_pct": 100.0,
+    "deep_max_allowed": 80,
+    "routine_min_allowed": 20
+  },
+  "alert": {
+    "level": "🟢 綠燈",
+    "notify_jan": false,
+    "reason": "深度 0% ≤ 80%、日常 100% ≥ 20%、總量 342,847 < 1M，全部綠線"
+  },
+  "recommendation": "今日僅 1 個 cron session (342K tokens)，微信深度對話為 0。深度比例為 0%、日常比例 100%，雖然符合 SOP 紅線標準（日常 ≥ 20%），但 4 天移動平均深度占比 61.6% / 日常 38.4% 顯示整體結構仍偏深度。今日數據呈現極端值（無微信對話），屬於 22:00 晚間時段正常現象。明日 7-9 點微信晨間使用量進來後比例會自然回歸。建議持續觀察，不需調整。"
+}

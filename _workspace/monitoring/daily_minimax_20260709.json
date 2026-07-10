@@ -1,0 +1,38 @@
+{
+  "metadata": {
+    "date": "2026-07-09",
+    "version": "v2.0",
+    "sop_formula": "ax ≤ 4by (80/20 比例控制)"
+  },
+  "today": {
+    "total_tokens": 301172,
+    "seven_day_avg": 1348259,
+    "deep_sessions": 0,
+    "daily_sessions": 1,
+    "deep_tokens": 0,
+    "daily_tokens": 301172,
+    "deep_ratio": 0.0,
+    "daily_ratio": 100.0
+  },
+  "sop_check": {
+    "formula": "ax ≤ 4by",
+    "a_avg_deep_token": 0.0,
+    "b_avg_daily_token": 301172.0,
+    "x_deep_sessions": 0,
+    "y_daily_sessions": 1,
+    "ax": 0.0,
+    "four_by": 1204688.0,
+    "sop_formula_pass": true,
+    "ratio_80_20_pass": true
+  },
+  "alert": {
+    "level": "🟢 綠",
+    "notify_jan": false,
+    "triggers": {
+      "deep_over_80": false,
+      "daily_under_20": false,
+      "total_over_2M": false
+    }
+  },
+  "recommendation": "✅ 健康：比例在理想區間，可繼續保持"
+}

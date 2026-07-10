@@ -1,0 +1,43 @@
+{
+  "date": "2026-07-10",
+  "timestamp": "2026-07-10T23:56:56.444230+08:00",
+  "today": {
+    "total_tokens": 305330,
+    "deep_sessions": 0,
+    "daily_sessions": 1,
+    "deep_tokens": 0,
+    "daily_tokens": 305330,
+    "deep_pct": 0.0,
+    "daily_pct": 100.0
+  },
+  "sop_formula": {
+    "rule": "ax ≤ 4by",
+    "x_deep_sessions": 0,
+    "y_daily_sessions": 1,
+    "a_deep_avg_tokens": 0,
+    "b_daily_avg_tokens": 305330.0,
+    "lhs": 0,
+    "rhs": 1221320.0,
+    "satisfied": true,
+    "status": "✅ 通過（無深度 sessions，比例 100% 日常）"
+  },
+  "alert_level": "🟢 綠燈",
+  "seven_day_avg": {
+    "avg_daily_total": 1038673,
+    "avg_deep_pct": 22.5,
+    "avg_daily_pct": 77.5
+  },
+  "thresholds": {
+    "deep_red": 80,
+    "deep_yellow": 70,
+    "daily_red": 20,
+    "daily_yellow": 30,
+    "total_red": 2000000,
+    "total_yellow": 1000000
+  },
+  "action": {
+    "notify_jan": false,
+    "log_only": false,
+    "silent": true
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "date": "2026-07-07",
+  "timestamp_utc": "2026-07-07T14:01:09.155390+00:00",
+  "today_total_tokens": 280408,
+  "7day_avg_total_tokens": 1757380,
+  "sessions": {
+    "deep_count": 0,
+    "daily_count": 1
+  },
+  "tokens": {
+    "deep": 0,
+    "daily": 280408
+  },
+  "ratios": {
+    "deep_pct": 0.0,
+    "daily_pct": 100.0
+  },
+  "sop_formula": {
+    "formula": "ax ≤ 4by",
+    "x_deep_sessions": 0,
+    "y_daily_sessions": 1,
+    "a_avg_deep_tokens": 0,
+    "b_avg_daily_tokens": 280408.0,
+    "ax": 0,
+    "4by": 1121632.0,
+    "pass": true,
+    "reason": "深度 sessions 為 0，SOP 公式 ax ≤ 4by 恆成立（vacuously true）"
+  },
+  "alert_level": "🟢 綠燈",
+  "red_triggered": false,
+  "yellow_triggered": false,
+  "reasons": [
+    "深度 ≤ 70% 且 日常 ≥ 30% 且 總量 ≤ 1M，全部健康"
+  ],
+  "recommendation": "✅ 健康但單極化：今日 100% 為日常 cron 任務，無深度 weixin 調用。建議下次主動發起深度任務以保持 80/20 平衡（雖 SOP 通過，但極值分布需關注）。",
+  "past_5day_avg": {
+    "avg_daily_total": 1757380,
+    "avg_depth_pct": 49.3,
+    "avg_daily_pct": 50.7
+  }
+}
